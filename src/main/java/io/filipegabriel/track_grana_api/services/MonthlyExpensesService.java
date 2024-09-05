@@ -30,6 +30,11 @@ public class MonthlyExpensesService {
         return monthlyExpenses;
     }
 
+    public MonthlyExpenses insert(MonthlyExpenses monthlyExpenses){
+        repository.save(monthlyExpenses);
+        return monthlyExpenses;
+    }
+
 //Delete
 
     public void delete(Long id){
