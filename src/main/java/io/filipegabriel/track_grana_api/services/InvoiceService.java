@@ -36,6 +36,7 @@ public class InvoiceService {
         MonthlyContracts monthlyContracts = monthlyContractsService.insert();
         MonthlyExpenses monthlyExpenses = monthlyExpensesService.insert();
 
+        invoice.setTotalInvoiceValue(0.0);
         invoice.setTotalPaid(false);
         invoice.setMonthlyContracts(monthlyContracts);
         invoice.setMonthlyExpenses(monthlyExpenses);

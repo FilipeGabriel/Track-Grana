@@ -1,6 +1,7 @@
 package io.filipegabriel.track_grana_api.services;
 
 import io.filipegabriel.track_grana_api.entities.ContractItem;
+import io.filipegabriel.track_grana_api.entities.Invoice;
 import io.filipegabriel.track_grana_api.entities.MonthlyContracts;
 import io.filipegabriel.track_grana_api.entities.SpentType;
 import io.filipegabriel.track_grana_api.repositories.ContractItemRepository;
@@ -45,6 +46,8 @@ public class ContractItemService {
         ContractItem contractItem = new ContractItem();
         SpentType spentType = spentTypeRepository.findById(contractItemDTO.getSpentTypeId()).orElseThrow(NoSuchElementException::new);
         MonthlyContracts monthlyContracts = monthlyContractsRepository.findById(contractItemDTO.getMonthlyContractsId()).orElseThrow(NoSuchElementException::new);
+        Invoice invoice = monthlyContracts.getInvoice();
+
         LocalDate contractItemDate = LocalDate.parse(contractItemDTO.getEndDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         contractItem.setDescription(contractItemDTO.getDescription());
@@ -58,8 +61,11 @@ public class ContractItemService {
 
         spentType.getContractItems().add(contractItem);
         monthlyContracts.getContractItems().add(contractItem);
+
         Double itemValue = monthlyContracts.getTotalMonthlyContractsValue() + contractItem.getItemValue();
         monthlyContracts.setTotalMonthlyContractsValue(itemValue);
+
+        invoice.setTotalInvoiceValue(invoice.getMonthlyContracts().getTotalMonthlyContractsValue() + invoice.getMonthlyExpenses().getTotalMonthlyExpensesValue());
 
         spentTypeRepository.save(spentType);
         monthlyContractsRepository.save(monthlyContracts);

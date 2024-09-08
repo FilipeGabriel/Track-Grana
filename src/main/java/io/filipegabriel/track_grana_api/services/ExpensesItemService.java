@@ -1,5 +1,6 @@
 package io.filipegabriel.track_grana_api.services;
 
+import io.filipegabriel.track_grana_api.entities.Invoice;
 import io.filipegabriel.track_grana_api.entities.MonthlyExpenses;
 import io.filipegabriel.track_grana_api.entities.SpentType;
 import io.filipegabriel.track_grana_api.entities.ExpensesItem;
@@ -43,6 +44,7 @@ public class ExpensesItemService {
         ExpensesItem expensesItem = new ExpensesItem();
         SpentType spentType = spentTypeRepository.findById(expensesItemDTO.getSpentTypeId()).orElseThrow(NoSuchElementException::new);
         MonthlyExpenses monthlyExpenses = monthlyExpensesRepository.findById(expensesItemDTO.getMonthlyExpensesId()).orElseThrow(NoSuchElementException::new);
+        Invoice invoice = monthlyExpenses.getInvoice();
 
         expensesItem.setDescription(expensesItemDTO.getDescription());
         expensesItem.setInstallment(expensesItemDTO.getInstallment());
@@ -54,8 +56,11 @@ public class ExpensesItemService {
 
         spentType.getExpensesItems().add(expensesItem);
         monthlyExpenses.getExpensesItems().add(expensesItem);
+
         Double expensesValue = monthlyExpenses.getTotalMonthlyExpensesValue() + expensesItem.getItemValue();
         monthlyExpenses.setTotalMonthlyExpensesValue(expensesValue);
+
+        invoice.setTotalInvoiceValue(invoice.getMonthlyExpenses().getTotalMonthlyExpensesValue() + invoice.getMonthlyContracts().getTotalMonthlyContractsValue());
 
         spentTypeRepository.save(spentType);
         monthlyExpensesRepository.save(monthlyExpenses);
