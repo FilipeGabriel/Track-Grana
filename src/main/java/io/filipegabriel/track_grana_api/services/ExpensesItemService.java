@@ -54,6 +54,8 @@ public class ExpensesItemService {
 
         spentType.getExpensesItems().add(expensesItem);
         monthlyExpenses.getExpensesItems().add(expensesItem);
+        Double expensesValue = monthlyExpenses.getTotalMonthlyExpensesValue() + expensesItem.getItemValue();
+        monthlyExpenses.setTotalMonthlyExpensesValue(expensesValue);
 
         spentTypeRepository.save(spentType);
         monthlyExpensesRepository.save(monthlyExpenses);
