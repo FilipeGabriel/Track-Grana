@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/v1/api/invoices")
@@ -22,6 +23,12 @@ public class InvoiceResource {
     public ResponseEntity<Invoice> findById(@PathVariable Long id){
         Invoice invoice = service.findById(id);
         return ResponseEntity.ok().body(invoice);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Invoice>> findAll(){
+        List<Invoice> invoices = service.findAll();
+        return ResponseEntity.ok().body(invoices);
     }
 
 //Post

@@ -19,6 +19,10 @@ public class Invoice implements Serializable {
     private Boolean totalPaid;
 
     @OneToOne
+    @JoinColumn(name = "month_invoice_id", unique = true)
+    private MonthInvoice monthInvoice;
+
+    @OneToOne
     @JoinColumn(name = "monthly_contracts_id")
     private MonthlyContracts monthlyContracts;
 
