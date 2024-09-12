@@ -17,10 +17,9 @@ public class MonthInvoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String monthName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate monthYear;
 

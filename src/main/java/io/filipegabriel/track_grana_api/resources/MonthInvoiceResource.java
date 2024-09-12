@@ -32,20 +32,4 @@ public class MonthInvoiceResource {
         return ResponseEntity.ok().body(monthInvoices);
     }
 
-//Post
-
-    @PostMapping("/first-time")
-    public ResponseEntity<MonthInvoice> insertFirstTime(){
-        MonthInvoice monthInvoice = service.insertFirstTime();
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(monthInvoice.getId()).toUri();
-        return ResponseEntity.created(uri).body(monthInvoice);
-    }
-
-    @PostMapping
-    public ResponseEntity<MonthInvoice> insert(@RequestBody MonthInvoiceDTO monthInvoiceDTO){
-        MonthInvoice monthInvoice = service.insert(monthInvoiceDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(monthInvoice.getId()).toUri();
-        return ResponseEntity.created(uri).body(monthInvoice);
-    }
-
 }

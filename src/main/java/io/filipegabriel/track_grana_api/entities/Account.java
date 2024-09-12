@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,5 +31,8 @@ public class Account implements Serializable {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "account")
+    private List<Invoice> invoices = new ArrayList<>();
 
 }

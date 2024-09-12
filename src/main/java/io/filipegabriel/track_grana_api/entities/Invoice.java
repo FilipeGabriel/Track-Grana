@@ -1,5 +1,6 @@
 package io.filipegabriel.track_grana_api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -29,5 +30,10 @@ public class Invoice implements Serializable {
     @OneToOne
     @JoinColumn(name = "monthly_expenses_id")
     private MonthlyExpenses monthlyExpenses;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
 }

@@ -11,8 +11,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MonthInvoiceDTO {
 
-    private String monthName;
-
     private String monthYear;
 
 }

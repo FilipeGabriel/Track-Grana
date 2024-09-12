@@ -1,9 +1,7 @@
 package io.filipegabriel.track_grana_api.services;
 
-import io.filipegabriel.track_grana_api.entities.Invoice;
-import io.filipegabriel.track_grana_api.entities.MonthInvoice;
-import io.filipegabriel.track_grana_api.entities.MonthlyContracts;
-import io.filipegabriel.track_grana_api.entities.MonthlyExpenses;
+import io.filipegabriel.track_grana_api.entities.*;
+import io.filipegabriel.track_grana_api.repositories.AccountRepository;
 import io.filipegabriel.track_grana_api.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,9 @@ public class InvoiceService {
     private InvoiceRepository repository;
 
     @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
     private MonthInvoiceService monthInvoiceService;
 
     @Autowired
@@ -26,6 +27,9 @@ public class InvoiceService {
 
     @Autowired
     private MonthlyExpensesService monthlyExpensesService;
+
+    @Autowired
+    private AccountService accountService;
 
 //Get
 
@@ -40,27 +44,31 @@ public class InvoiceService {
 
 //Post
 
-    public Invoice insert(){
+    public Invoice insertFirstInvoice(Long id){
         Invoice invoice = new Invoice();
         MonthlyContracts monthlyContracts = monthlyContractsService.insert();
         MonthlyExpenses monthlyExpenses = monthlyExpensesService.insert();
         MonthInvoice monthInvoice = monthInvoiceService.insertFirstTime();
+        Account account = accountService.findById(id);
 
         invoice.setTotalInvoiceValue(0.0);
         invoice.setTotalPaid(false);
         invoice.setMonthInvoice(monthInvoice);
         invoice.setMonthlyContracts(monthlyContracts);
         invoice.setMonthlyExpenses(monthlyExpenses);
+        invoice.setAccount(account);
 
         repository.save(invoice);
 
         monthInvoice.setInvoice(invoice);
         monthlyContracts.setInvoice(invoice);
         monthlyExpenses.setInvoice(invoice);
+        account.getInvoices().add(invoice);
 
         monthInvoiceService.insert(monthInvoice);
         monthlyContractsService.insert(monthlyContracts);
         monthlyExpensesService.insert(monthlyExpenses);
+        accountRepository.save(account);
 
         return invoice;
     }

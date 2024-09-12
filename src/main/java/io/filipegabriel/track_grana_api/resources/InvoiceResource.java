@@ -1,6 +1,7 @@
 package io.filipegabriel.track_grana_api.resources;
 
 import io.filipegabriel.track_grana_api.entities.Invoice;
+import io.filipegabriel.track_grana_api.resources.dto.MonthInvoiceDTO;
 import io.filipegabriel.track_grana_api.services.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,9 @@ public class InvoiceResource {
 
 //Post
 
-    @PostMapping
-    public ResponseEntity<Invoice> insert(){
-        Invoice invoice = service.insert();
+    @PostMapping("/{id}")
+    public ResponseEntity<Invoice> insert(@PathVariable Long id){
+        Invoice invoice = service.insertFirstInvoice(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(invoice.getId()).toUri();
         return ResponseEntity.created(uri).body(invoice);
     }
