@@ -19,7 +19,6 @@ public class MonthInvoice implements Serializable {
 
     private String monthName;
 
-    @Column(unique = true)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate monthYear;
 
