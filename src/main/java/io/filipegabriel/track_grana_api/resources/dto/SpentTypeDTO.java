@@ -1,5 +1,6 @@
 package io.filipegabriel.track_grana_api.resources.dto;
 
+import io.filipegabriel.track_grana_api.entities.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,7 @@ public class SpentTypeDTO {
     private Long unitItemsId;
 
     private Long ContractItemsId;
+
+    private Long accountId;
 
 }

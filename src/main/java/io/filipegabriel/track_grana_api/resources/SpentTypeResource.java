@@ -18,13 +18,13 @@ public class SpentTypeResource {
     @Autowired
     private SpentTypeService service;
 
-    @GetMapping
-    private ResponseEntity<List<SpentType>> findAll(){
-        List<SpentType> spentType = service.findAll();
+    @GetMapping("/find-all/{id}")
+    private ResponseEntity<List<SpentType>> findAll(@PathVariable Long id){
+        List<SpentType> spentType = service.findAll(id);
         return ResponseEntity.ok().body(spentType);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     private ResponseEntity<SpentType> findById(@PathVariable Long id){
         SpentType spentType = service.findById(id);
         return ResponseEntity.ok().body(spentType);

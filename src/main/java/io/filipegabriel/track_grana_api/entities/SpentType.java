@@ -17,7 +17,7 @@ public class SpentType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -33,5 +33,10 @@ public class SpentType implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "spentType")
     private List<ContractItem> ContractItems = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
 }

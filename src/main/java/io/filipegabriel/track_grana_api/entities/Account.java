@@ -1,6 +1,7 @@
 package io.filipegabriel.track_grana_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -34,5 +35,8 @@ public class Account implements Serializable {
 
     @OneToMany(mappedBy = "account")
     private List<Invoice> invoices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
+    private List<SpentType> spentTypes = new ArrayList<>();
 
 }

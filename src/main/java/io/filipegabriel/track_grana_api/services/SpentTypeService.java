@@ -1,6 +1,8 @@
 package io.filipegabriel.track_grana_api.services;
 
+import io.filipegabriel.track_grana_api.entities.Account;
 import io.filipegabriel.track_grana_api.entities.SpentType;
+import io.filipegabriel.track_grana_api.repositories.AccountRepository;
 import io.filipegabriel.track_grana_api.repositories.SpentTypeRepository;
 import io.filipegabriel.track_grana_api.resources.dto.SpentTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,14 @@ public class SpentTypeService {
     @Autowired
     private SpentTypeRepository repository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
 //Get
 
-    public List<SpentType> findAll(){
-        return repository.findAll();
+    public List<SpentType> findAll(Long id){
+        Account account = accountRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return account.getSpentTypes();
     }
 
     public SpentType findById(Long id){
@@ -31,11 +37,16 @@ public class SpentTypeService {
 
     public SpentType insert(SpentTypeDTO spentTypeDTO){
         SpentType spentType = new SpentType();
+        Account account = accountRepository.findById(spentTypeDTO.getAccountId()).orElseThrow(NoSuchElementException::new);
         spentType.setName(spentTypeDTO.getName());
         spentType.setTotalBankValue(spentTypeDTO.getTotalBankValue());
         spentType.setPaid(false);
+        spentType.setAccount(account);
+
+        account.getSpentTypes().add(spentType);
 
         repository.save(spentType);
+        accountRepository.save(account);
         return spentType;
     }
 
