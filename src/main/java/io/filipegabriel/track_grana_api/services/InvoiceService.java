@@ -3,10 +3,10 @@ package io.filipegabriel.track_grana_api.services;
 import io.filipegabriel.track_grana_api.entities.*;
 import io.filipegabriel.track_grana_api.repositories.AccountRepository;
 import io.filipegabriel.track_grana_api.repositories.InvoiceRepository;
+import io.filipegabriel.track_grana_api.resources.dto.MonthInvoiceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -38,17 +38,13 @@ public class InvoiceService {
         return invoice.get();
     }
 
-    public List<Invoice> findAll(){
-        return repository.findAll();
-    }
-
 //Post
 
-    public Invoice insertFirstInvoice(Long id){
+    public Invoice insert(Long id, MonthInvoiceDTO monthInvoiceDTO){
         Invoice invoice = new Invoice();
         MonthlyContracts monthlyContracts = monthlyContractsService.insert();
         MonthlyExpenses monthlyExpenses = monthlyExpensesService.insert();
-        MonthInvoice monthInvoice = monthInvoiceService.insertFirstTime();
+        MonthInvoice monthInvoice = monthInvoiceService.insert(monthInvoiceDTO);
         Account account = accountService.findById(id);
 
         invoice.setTotalInvoiceValue(0.0);
@@ -57,6 +53,15 @@ public class InvoiceService {
         invoice.setMonthlyContracts(monthlyContracts);
         invoice.setMonthlyExpenses(monthlyExpenses);
         invoice.setAccount(account);
+
+        for (Invoice i : account.getInvoices()){            //Logic to prevent an invoice from being created for the same month
+            if (
+                    monthInvoice.getMonthYear().getMonth() == i.getMonthInvoice().getMonthYear().getMonth() &&
+                            monthInvoice.getMonthYear().getYear() == i.getMonthInvoice().getMonthYear().getYear()
+            ){
+                throw new IllegalArgumentException("Já existe uma fatura para esse período");
+            }
+        }
 
         repository.save(invoice);
 

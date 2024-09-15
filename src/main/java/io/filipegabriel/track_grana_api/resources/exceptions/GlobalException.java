@@ -26,15 +26,25 @@ public class GlobalException {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<StandardError> noSuchElement(DataIntegrityViolationException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> dataIntegrityViolation(DataIntegrityViolationException e, HttpServletRequest request){
         Instant timestamp = Instant.now();
         HttpStatus status = HttpStatus.CONFLICT;
-        String error = "Houve algum erro ao tentar realizar o procedimento. Verifique";
+        String error = "Houve algum erro ao tentar realizar o procedimento. Verifique!";
         String message = e.getMessage();
         String path = request.getRequestURI();
         StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
         return ResponseEntity.status(status).body(standardError);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException e, HttpServletRequest request){
+        Instant timestamp = Instant.now();
+        HttpStatus status = HttpStatus.CONFLICT;
+        String error = "Exceção de argumento ilegal. Verifique!";
+        String message = e.getMessage();
+        String path = request.getRequestURI();
+        StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
+        return ResponseEntity.status(status).body(standardError);
+    }
 
 }

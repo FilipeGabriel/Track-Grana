@@ -26,17 +26,11 @@ public class InvoiceResource {
         return ResponseEntity.ok().body(invoice);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Invoice>> findAll(){
-        List<Invoice> invoices = service.findAll();
-        return ResponseEntity.ok().body(invoices);
-    }
-
 //Post
 
     @PostMapping("/{id}")
-    public ResponseEntity<Invoice> insert(@PathVariable Long id){
-        Invoice invoice = service.insertFirstInvoice(id);
+    public ResponseEntity<Invoice> insertNextInvoices(@PathVariable Long id, @RequestBody MonthInvoiceDTO monthInvoiceDTO){
+        Invoice invoice = service.insert(id, monthInvoiceDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(invoice.getId()).toUri();
         return ResponseEntity.created(uri).body(invoice);
     }

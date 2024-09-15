@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -25,8 +26,9 @@ public class AccountService {
 //Get
 
     public Account findById(Long id){
-        Optional<Account> user = repository.findById(id);
-        return user.get();
+        Account user = repository.findById(id).orElseThrow(NoSuchElementException::new);;
+        user.getInvoices().sort(Comparator.comparing(invoices -> invoices.getMonthInvoice().getMonthYear()));       //Makes invoices appear in order by invoice date
+        return user;
     }
 
 //Post
