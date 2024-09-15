@@ -60,6 +60,7 @@ public class ContractItemService {
         repository.save(contractItem);
 
         spentType.getContractItems().add(contractItem);
+        spentType.setTotalBankValue(spentType.getTotalBankValue() + contractItem.getItemValue());
         monthlyContracts.getContractItems().add(contractItem);
 
         Double itemValue = monthlyContracts.getTotalMonthlyContractsValue() + contractItem.getItemValue();

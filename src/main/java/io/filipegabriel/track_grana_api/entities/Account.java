@@ -36,6 +36,7 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "account")
     private List<Invoice> invoices = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<SpentType> spentTypes = new ArrayList<>();
 
