@@ -29,9 +29,11 @@ public class Account implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
+    private String accountImage;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
     @OneToMany(mappedBy = "account")
     private List<Invoice> invoices = new ArrayList<>();

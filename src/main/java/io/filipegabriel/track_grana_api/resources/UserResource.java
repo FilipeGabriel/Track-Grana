@@ -1,6 +1,6 @@
 package io.filipegabriel.track_grana_api.resources;
 
-import io.filipegabriel.track_grana_api.entities.User;
+import io.filipegabriel.track_grana_api.entities.Users;
 import io.filipegabriel.track_grana_api.resources.dto.UserDTO;
 import io.filipegabriel.track_grana_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,8 @@ public class UserResource {
 //Get
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
-        User user = service.findById(id);
+    public ResponseEntity<Users> findById(@PathVariable Long id){
+        Users user = service.findById(id);
         return ResponseEntity.ok().body(user);
     }
 
@@ -30,7 +30,7 @@ public class UserResource {
 
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody UserDTO user){
-        User newUser = service.insert(user);
+        Users newUser = service.insert(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
@@ -38,8 +38,8 @@ public class UserResource {
 //Put
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserDTO newUser){
-        User user = service.update(id, newUser);
+    public ResponseEntity<Users> update(@PathVariable Long id, @RequestBody UserDTO newUser){
+        Users user = service.update(id, newUser);
         return ResponseEntity.ok().body(user);
     }
 

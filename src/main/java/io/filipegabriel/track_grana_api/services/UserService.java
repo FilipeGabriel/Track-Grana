@@ -1,6 +1,6 @@
 package io.filipegabriel.track_grana_api.services;
 
-import io.filipegabriel.track_grana_api.entities.User;
+import io.filipegabriel.track_grana_api.entities.Users;
 import io.filipegabriel.track_grana_api.repositories.UserRepository;
 import io.filipegabriel.track_grana_api.resources.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,15 @@ public class UserService {
 
 //Get
 
-    public User findById(Long id){
-        Optional<User> user = repository.findById(id);
+    public Users findById(Long id){
+        Optional<Users> user = repository.findById(id);
         return user.get();
     }
 
 //Post
 
-    public User insert(UserDTO user){
-        User newUser = new User();
+    public Users insert(UserDTO user){
+        Users newUser = new Users();
 
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
@@ -40,15 +40,15 @@ public class UserService {
 
 //Put
 
-    public User update(Long id, UserDTO newUser){
-        User oldUser = repository.findById(id).orElseThrow(NoSuchElementException::new);
+    public Users update(Long id, UserDTO newUser){
+        Users oldUser = repository.findById(id).orElseThrow(NoSuchElementException::new);
         updateUser(oldUser, newUser);
 
         repository.save(oldUser);
         return oldUser;
     }
 
-    public void updateUser(User oldUser, UserDTO newUser){
+    public void updateUser(Users oldUser, UserDTO newUser){
         oldUser.setPassword(newUser.getPassword());
         oldUser.setEmail(newUser.getEmail());
     }

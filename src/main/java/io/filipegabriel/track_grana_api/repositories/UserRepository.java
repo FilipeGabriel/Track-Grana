@@ -1,10 +1,11 @@
 package io.filipegabriel.track_grana_api.repositories;
 
-import io.filipegabriel.track_grana_api.entities.User;
+import io.filipegabriel.track_grana_api.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
 
-    User findByUsername(String username);
+    UserDetails findByEmail(String email);
 
 }

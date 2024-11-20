@@ -17,6 +17,8 @@ public class AccountDTO {
 
     private String birthDate;
 
+    private String accountImage;
+
     private Long userId;
 
 }
