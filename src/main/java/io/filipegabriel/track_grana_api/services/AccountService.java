@@ -38,6 +38,7 @@ public class AccountService {
 
         LocalDate birthDate = LocalDate.parse(account.getBirthDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
+        newAccount.setUserName(account.getUserName());
         newAccount.setName(account.getName());
         newAccount.setCpf(account.getCpf());
         newAccount.setTelephone(account.getTelephone());

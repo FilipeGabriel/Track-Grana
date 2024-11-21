@@ -4,6 +4,7 @@ import io.filipegabriel.track_grana_api.entities.Users;
 import io.filipegabriel.track_grana_api.repositories.UserRepository;
 import io.filipegabriel.track_grana_api.resources.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,10 +28,10 @@ public class UserService {
 
     public Users insert(UserDTO user){
         Users newUser = new Users();
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
 
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getPassword());
         newUser.setEmail(user.getEmail());
+        newUser.setPassword(encryptedPassword);
         newUser.setRegistrationDate(LocalDateTime.now());
 
         repository.save(newUser);
