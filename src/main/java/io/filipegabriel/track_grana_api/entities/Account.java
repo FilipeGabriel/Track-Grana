@@ -34,6 +34,7 @@ public class Account implements Serializable {
 
     private String accountImage;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private Users user;

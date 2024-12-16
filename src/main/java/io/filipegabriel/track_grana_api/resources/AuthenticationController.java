@@ -34,12 +34,14 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
+        Users user = (Users) userRepository.findByEmail(data.email());
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((Users) auth.getPrincipal());
+        var userId = user.getId();
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new LoginResponseDTO(token, userId));
     }
 
     @PostMapping("/register")

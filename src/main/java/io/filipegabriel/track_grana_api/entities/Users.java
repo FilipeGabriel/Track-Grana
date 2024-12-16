@@ -26,7 +26,6 @@ public class Users implements Serializable, UserDetails {
 
     private LocalDateTime registrationDate;
 
-    @JsonIgnore
     @OneToOne(mappedBy = "user")
     private Account account;
 
