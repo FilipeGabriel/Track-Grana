@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
@@ -41,6 +42,17 @@ public class GlobalException {
         Instant timestamp = Instant.now();
         HttpStatus status = HttpStatus.CONFLICT;
         String error = "Exceção de argumento ilegal. Verifique!";
+        String message = e.getMessage();
+        String path = request.getRequestURI();
+        StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
+        return ResponseEntity.status(status).body(standardError);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<StandardError> dateTimeParse(DateTimeParseException e, HttpServletRequest request){
+        Instant timestamp = Instant.now();
+        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
+        String error = "Formato de data invalido, entre em contato com o suporte, informando essa mensagem!";
         String message = e.getMessage();
         String path = request.getRequestURI();
         StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
