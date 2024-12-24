@@ -39,6 +39,7 @@ public class SpentTypeService {
         SpentType spentType = new SpentType();
         Account account = accountRepository.findById(spentTypeDTO.getAccountId()).orElseThrow(NoSuchElementException::new);
         spentType.setName(spentTypeDTO.getName());
+        spentType.setColor(spentTypeDTO.getColor());
         spentType.setTotalBankValue(spentTypeDTO.getTotalBankValue());
         spentType.setPaid(false);
         spentType.setAccount(account);
@@ -66,6 +67,7 @@ public class SpentTypeService {
 
     public void updateSpentType(SpentType oldSpentType, SpentTypeDTO newSpentType){
         oldSpentType.setName(newSpentType.getName());
+        oldSpentType.setColor(newSpentType.getColor());
         oldSpentType.setPaid(newSpentType.getPaid());
     }
 
