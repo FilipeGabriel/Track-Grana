@@ -19,7 +19,7 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String userName;
 
     private String name;
@@ -32,6 +32,7 @@ public class Account implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
+    @Column(length = 1000000)
     private String accountImage;
 
     @JsonIgnore

@@ -75,6 +75,7 @@ public class AccountService {
 
         oldAccount.setName(newAccount.getName());
         oldAccount.setTelephone(newAccount.getTelephone());
+        oldAccount.setAccountImage(newAccount.getAccountImage());
         oldAccount.setBirthDate(birthDate);
     }
 
