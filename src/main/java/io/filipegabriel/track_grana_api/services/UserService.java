@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -50,8 +51,12 @@ public class UserService {
     }
 
     public void updateUser(Users oldUser, UserDTO newUser){
-        oldUser.setPassword(newUser.getPassword());
-        oldUser.setEmail(newUser.getEmail());
-    }
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+        if (passwordEncoder.matches(newUser.getPassword(), oldUser.getPassword())) {
+            oldUser.setPassword(passwordEncoder.encode(newUser.getNewPassword()));
+        } else {
+            throw new IllegalArgumentException("Senha incorreta! Tente novamente.");
+        }
+    }
 }
