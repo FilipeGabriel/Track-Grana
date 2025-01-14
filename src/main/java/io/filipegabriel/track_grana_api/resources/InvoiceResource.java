@@ -1,7 +1,10 @@
 package io.filipegabriel.track_grana_api.resources;
 
+import io.filipegabriel.track_grana_api.entities.Account;
 import io.filipegabriel.track_grana_api.entities.Invoice;
+import io.filipegabriel.track_grana_api.resources.dto.InvoiceDTO;
 import io.filipegabriel.track_grana_api.resources.dto.MonthInvoiceDTO;
+import io.filipegabriel.track_grana_api.services.AccountService;
 import io.filipegabriel.track_grana_api.services.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,12 @@ public class InvoiceResource {
     private InvoiceService service;
 
 //Get
+
+    @GetMapping("/find-all/{id}")
+    public ResponseEntity<List<Invoice>> findAll(@PathVariable Long id, @RequestBody InvoiceDTO invoiceDTO){
+        List<Invoice> invoices = service.findAll(id, invoiceDTO);
+        return ResponseEntity.ok().body(invoices);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Invoice> findById(@PathVariable Long id){

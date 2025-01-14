@@ -3,10 +3,13 @@ package io.filipegabriel.track_grana_api.services;
 import io.filipegabriel.track_grana_api.entities.*;
 import io.filipegabriel.track_grana_api.repositories.AccountRepository;
 import io.filipegabriel.track_grana_api.repositories.InvoiceRepository;
+import io.filipegabriel.track_grana_api.resources.dto.InvoiceDTO;
 import io.filipegabriel.track_grana_api.resources.dto.MonthInvoiceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -32,6 +35,22 @@ public class InvoiceService {
     private AccountService accountService;
 
 //Get
+
+    public List<Invoice> findAll(Long id, InvoiceDTO invoiceDTO){
+        Account account = accountService.findById(id);
+        List<Invoice> yearInvoices = new ArrayList<>();
+
+        for (Invoice invoice : account.getInvoices()){
+            if (invoice.getMonthInvoice().getMonthYear().getYear() == Integer.parseInt(invoiceDTO.getYear())){
+                yearInvoices.add(invoice);
+            }
+        }
+        if (!yearInvoices.isEmpty()){
+            return yearInvoices;
+        } else {
+            throw new IllegalArgumentException("Não tem Faturas para o ano informado!");
+        }
+    }
 
     public Invoice findById(Long id){
         Optional<Invoice> invoice = repository.findById(id);
