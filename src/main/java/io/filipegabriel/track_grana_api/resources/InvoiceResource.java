@@ -23,9 +23,9 @@ public class InvoiceResource {
 
 //Get
 
-    @GetMapping("/find-all/{id}")
-    public ResponseEntity<List<Invoice>> findAll(@PathVariable Long id, @RequestBody InvoiceDTO invoiceDTO){
-        List<Invoice> invoices = service.findAll(id, invoiceDTO);
+    @GetMapping("/find-all/{id}/{year}")
+    public ResponseEntity<List<Invoice>> findAll(@PathVariable Long id, @PathVariable String year){
+        List<Invoice> invoices = service.findAll(id, year);
         return ResponseEntity.ok().body(invoices);
     }
 

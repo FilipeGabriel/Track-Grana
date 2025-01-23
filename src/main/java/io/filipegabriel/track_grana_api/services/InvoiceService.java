@@ -36,12 +36,12 @@ public class InvoiceService {
 
 //Get
 
-    public List<Invoice> findAll(Long id, InvoiceDTO invoiceDTO){
+    public List<Invoice> findAll(Long id, String year){
         Account account = accountService.findById(id);
         List<Invoice> yearInvoices = new ArrayList<>();
 
         for (Invoice invoice : account.getInvoices()){
-            if (invoice.getMonthInvoice().getMonthYear().getYear() == Integer.parseInt(invoiceDTO.getYear())){
+            if (invoice.getMonthInvoice().getMonthYear().getYear() == Integer.parseInt(year)){
                 yearInvoices.add(invoice);
             }
         }
