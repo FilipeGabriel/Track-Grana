@@ -23,9 +23,15 @@ public class InvoiceResource {
 
 //Get
 
+    @GetMapping("/find-all/{id}")
+    public ResponseEntity<List<Invoice>> findAll(@PathVariable Long id){
+        List<Invoice> invoices = service.findAll(id);
+        return ResponseEntity.ok().body(invoices);
+    }
+
     @GetMapping("/find-all/{id}/{year}")
-    public ResponseEntity<List<Invoice>> findAll(@PathVariable Long id, @PathVariable String year){
-        List<Invoice> invoices = service.findAll(id, year);
+    public ResponseEntity<List<Invoice>> findAllInYear(@PathVariable Long id, @PathVariable String year){
+        List<Invoice> invoices = service.findAllInYear(id, year);
         return ResponseEntity.ok().body(invoices);
     }
 

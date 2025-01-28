@@ -36,7 +36,15 @@ public class InvoiceService {
 
 //Get
 
-    public List<Invoice> findAll(Long id, String year){
+    public List<Invoice> findAll(Long id) {
+        Account account = accountService.findById(id);
+        List<Invoice> invoices = new ArrayList<>();
+
+        invoices.addAll(account.getInvoices());
+        return invoices;
+    }
+
+    public List<Invoice> findAllInYear(Long id, String year){
         Account account = accountService.findById(id);
         List<Invoice> yearInvoices = new ArrayList<>();
 
