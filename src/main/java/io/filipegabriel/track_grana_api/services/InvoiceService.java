@@ -81,7 +81,7 @@ public class InvoiceService {
         invoice.setMonthlyExpenses(monthlyExpenses);
         invoice.setAccount(account);
 
-        for (Invoice i : account.getInvoices()){            //Logic to prevent an invoice from being created for the same month
+        for (Invoice i : account.getInvoices()){
             if (
                     monthInvoice.getMonthYear().getMonth() == i.getMonthInvoice().getMonthYear().getMonth() &&
                             monthInvoice.getMonthYear().getYear() == i.getMonthInvoice().getMonthYear().getYear()
@@ -90,19 +90,32 @@ public class InvoiceService {
             }
         }
 
-        repository.save(invoice);
+        if (!account.getSpentTypes().isEmpty()) {  // os ifs do invoiceservice e spenttypeservice estão funcionando, falta ajustar a regra para atrelar uma à outra que estão comentadas
 
-        monthInvoice.setInvoice(invoice);
-        monthlyContracts.setInvoice(invoice);
-        monthlyExpenses.setInvoice(invoice);
-        account.getInvoices().add(invoice);
+            List<SpentType> spentTypes = new ArrayList<>();
+            for (SpentType st : account.getSpentTypes()) {
+                spentTypes.add(st);
+                st.getInvoices().add(invoice); // Atualiza cada SpentType para incluir a Invoice
+            }
+            invoice.setSpentTypes(spentTypes); // Define os SpentTypes na Invoice
 
-        monthInvoiceService.insert(monthInvoice);
-        monthlyContractsService.insert(monthlyContracts);
-        monthlyExpensesService.insert(monthlyExpenses);
-        accountRepository.save(account);
+            repository.save(invoice);
 
-        return invoice;
+            monthInvoice.setInvoice(invoice);
+            monthlyContracts.setInvoice(invoice);
+            monthlyExpenses.setInvoice(invoice);
+            account.getInvoices().add(invoice);
+
+            monthInvoiceService.insert(monthInvoice);
+            monthlyContractsService.insert(monthlyContracts);
+            monthlyExpensesService.insert(monthlyExpenses);
+            accountRepository.save(account);
+
+            return invoice;
+        } else {
+            throw new IllegalArgumentException("Não há tipo de gasto cadastrado");
+        }
+
     }
 
 //Put

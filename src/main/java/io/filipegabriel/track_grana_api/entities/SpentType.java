@@ -1,5 +1,6 @@
 package io.filipegabriel.track_grana_api.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -42,4 +43,9 @@ public class SpentType implements Serializable {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @JsonBackReference
+    @JsonIgnore
+    @ManyToMany(mappedBy = "spentTypes")
+    private List<Invoice> Invoices = new ArrayList<>();
+    
 }

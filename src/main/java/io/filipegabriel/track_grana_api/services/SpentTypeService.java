@@ -1,8 +1,10 @@
 package io.filipegabriel.track_grana_api.services;
 
 import io.filipegabriel.track_grana_api.entities.Account;
+import io.filipegabriel.track_grana_api.entities.Invoice;
 import io.filipegabriel.track_grana_api.entities.SpentType;
 import io.filipegabriel.track_grana_api.repositories.AccountRepository;
+import io.filipegabriel.track_grana_api.repositories.InvoiceRepository;
 import io.filipegabriel.track_grana_api.repositories.SpentTypeRepository;
 import io.filipegabriel.track_grana_api.resources.dto.SpentTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class SpentTypeService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
 //Get
 
@@ -43,6 +48,14 @@ public class SpentTypeService {
         spentType.setTotalBankValue(spentTypeDTO.getTotalBankValue());
         spentType.setPaid(false);
         spentType.setAccount(account);
+
+        if (!account.getInvoices().isEmpty()) {
+            for (Invoice i : account.getInvoices()) {
+                if (!i.getSpentTypes().contains(spentType)) {  // Evita adicionar duplicado
+                    i.getSpentTypes().add(spentType);
+                }
+            }
+        }
 
         account.getSpentTypes().add(spentType);
 

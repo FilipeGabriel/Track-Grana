@@ -1,10 +1,13 @@
 package io.filipegabriel.track_grana_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -35,5 +38,14 @@ public class Invoice implements Serializable {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @JsonManagedReference
+    @ManyToMany
+    @JoinTable(
+        name = "invoice_spent",
+        joinColumns = @JoinColumn(name = "invoice_id"),
+        inverseJoinColumns = @JoinColumn(name = "spent_type_id")
+    )
+    private List<SpentType> spentTypes = new ArrayList<>();
 
 }
