@@ -25,9 +25,6 @@ public class SpentType implements Serializable {
     private String color;
 
     @Column(nullable = false)
-    private Double totalBankValue;
-
-    @Column(nullable = false)
     private Boolean paid;
 
     @JsonIgnore

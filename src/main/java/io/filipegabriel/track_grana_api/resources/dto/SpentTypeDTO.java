@@ -13,8 +13,6 @@ public class SpentTypeDTO {
 
     private String color;
 
-    private Double totalBankValue;
-
     private Boolean paid;
 
     private Long unitItemsId;

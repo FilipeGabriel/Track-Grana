@@ -45,7 +45,6 @@ public class SpentTypeService {
         Account account = accountRepository.findById(spentTypeDTO.getAccountId()).orElseThrow(NoSuchElementException::new);
         spentType.setName(spentTypeDTO.getName());
         spentType.setColor(spentTypeDTO.getColor());
-        spentType.setTotalBankValue(spentTypeDTO.getTotalBankValue());
         spentType.setPaid(false);
         spentType.setAccount(account);
 
