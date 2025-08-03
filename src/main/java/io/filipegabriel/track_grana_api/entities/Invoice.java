@@ -27,10 +27,6 @@ public class Invoice implements Serializable {
     private MonthInvoice monthInvoice;
 
     @OneToOne
-    @JoinColumn(name = "monthly_contracts_id")
-    private MonthlyContracts monthlyContracts;
-
-    @OneToOne
     @JoinColumn(name = "monthly_expenses_id")
     private MonthlyExpenses monthlyExpenses;
 

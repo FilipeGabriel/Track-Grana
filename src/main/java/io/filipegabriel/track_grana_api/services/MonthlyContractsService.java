@@ -26,9 +26,7 @@ public class MonthlyContractsService {
     public MonthlyContracts insert(){
         MonthlyContracts monthlyContracts = new MonthlyContracts();
         monthlyContracts.setTotalMonthlyContractsValue(0.0);
-        repository.save(monthlyContracts);
-
-        return monthlyContracts;
+        return repository.save(monthlyContracts);
     }
 
     public MonthlyContracts insert(MonthlyContracts monthlyContracts){

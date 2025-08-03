@@ -26,9 +26,6 @@ public class InvoiceService {
     private MonthInvoiceService monthInvoiceService;
 
     @Autowired
-    private MonthlyContractsService monthlyContractsService;
-
-    @Autowired
     private MonthlyExpensesService monthlyExpensesService;
 
     @Autowired
@@ -69,7 +66,6 @@ public class InvoiceService {
 
     public Invoice insert(Long id, MonthInvoiceDTO monthInvoiceDTO){
         Invoice invoice = new Invoice();
-        MonthlyContracts monthlyContracts = monthlyContractsService.insert();
         MonthlyExpenses monthlyExpenses = monthlyExpensesService.insert();
         MonthInvoice monthInvoice = monthInvoiceService.insert(monthInvoiceDTO);
         Account account = accountService.findById(id);
@@ -77,37 +73,33 @@ public class InvoiceService {
         invoice.setTotalInvoiceValue(0.0);
         invoice.setTotalPaid(false);
         invoice.setMonthInvoice(monthInvoice);
-        invoice.setMonthlyContracts(monthlyContracts);
         invoice.setMonthlyExpenses(monthlyExpenses);
         invoice.setAccount(account);
 
-        for (Invoice i : account.getInvoices()){
+        for (Invoice i : account.getInvoices()) {
             if (
                     monthInvoice.getMonthYear().getMonth() == i.getMonthInvoice().getMonthYear().getMonth() &&
                             monthInvoice.getMonthYear().getYear() == i.getMonthInvoice().getMonthYear().getYear()
-            ){
+            ) {
                 throw new IllegalArgumentException("Já existe uma fatura para esse período");
             }
         }
 
-        if (!account.getSpentTypes().isEmpty()) {  // os ifs do invoiceservice e spenttypeservice estão funcionando, falta ajustar a regra para atrelar uma à outra que estão comentadas
-
+        if (!account.getSpentTypes().isEmpty()) {
             List<SpentType> spentTypes = new ArrayList<>();
             for (SpentType st : account.getSpentTypes()) {
                 spentTypes.add(st);
-                st.getInvoices().add(invoice); // Atualiza cada SpentType para incluir a Invoice
+                st.getInvoices().add(invoice);
             }
-            invoice.setSpentTypes(spentTypes); // Define os SpentTypes na Invoice
+            invoice.setSpentTypes(spentTypes);
 
             repository.save(invoice);
 
             monthInvoice.setInvoice(invoice);
-            monthlyContracts.setInvoice(invoice);
             monthlyExpenses.setInvoice(invoice);
             account.getInvoices().add(invoice);
 
             monthInvoiceService.insert(monthInvoice);
-            monthlyContractsService.insert(monthlyContracts);
             monthlyExpensesService.insert(monthlyExpenses);
             accountRepository.save(account);
 
@@ -115,7 +107,6 @@ public class InvoiceService {
         } else {
             throw new IllegalArgumentException("Não há tipo de gasto cadastrado");
         }
-
     }
 
 //Put

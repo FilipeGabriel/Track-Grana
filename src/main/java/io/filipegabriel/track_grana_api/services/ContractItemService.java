@@ -5,6 +5,7 @@ import io.filipegabriel.track_grana_api.entities.Invoice;
 import io.filipegabriel.track_grana_api.entities.MonthlyContracts;
 import io.filipegabriel.track_grana_api.entities.SpentType;
 import io.filipegabriel.track_grana_api.repositories.ContractItemRepository;
+import io.filipegabriel.track_grana_api.repositories.InvoiceRepository;
 import io.filipegabriel.track_grana_api.repositories.MonthlyContractsRepository;
 import io.filipegabriel.track_grana_api.repositories.SpentTypeRepository;
 import io.filipegabriel.track_grana_api.resources.dto.ContractItemDTO;
@@ -29,6 +30,9 @@ public class ContractItemService {
     @Autowired
     private MonthlyContractsRepository monthlyContractsRepository;
 
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+
 //Get
 
     public List<ContractItem> findAll(){
@@ -46,7 +50,7 @@ public class ContractItemService {
         ContractItem contractItem = new ContractItem();
         SpentType spentType = spentTypeRepository.findById(contractItemDTO.getSpentTypeId()).orElseThrow(NoSuchElementException::new);
         MonthlyContracts monthlyContracts = monthlyContractsRepository.findById(contractItemDTO.getMonthlyContractsId()).orElseThrow(NoSuchElementException::new);
-        Invoice invoice = monthlyContracts.getInvoice();
+        Invoice invoice = invoiceRepository.findById(contractItemDTO.getInvoiceId()).orElseThrow(NoSuchElementException::new);      //Lembrar de adicionar o id do invoice atual no post da requisição
 
         LocalDate contractItemDate = LocalDate.parse(contractItemDTO.getEndDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
@@ -65,7 +69,7 @@ public class ContractItemService {
         Double itemValue = monthlyContracts.getTotalMonthlyContractsValue() + contractItem.getItemValue();
         monthlyContracts.setTotalMonthlyContractsValue(itemValue);
 
-        invoice.setTotalInvoiceValue(invoice.getMonthlyContracts().getTotalMonthlyContractsValue() + invoice.getMonthlyExpenses().getTotalMonthlyExpensesValue());
+        invoice.setTotalInvoiceValue(spentType.getAccount().getMonthlyContracts().getTotalMonthlyContractsValue() + invoice.getMonthlyExpenses().getTotalMonthlyExpensesValue());
 
         spentTypeRepository.save(spentType);
         monthlyContractsRepository.save(monthlyContracts);

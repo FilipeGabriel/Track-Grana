@@ -50,4 +50,8 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "account")
     private List<SpentType> spentTypes = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "monthly_contracts_id")
+    private MonthlyContracts monthlyContracts;
+
 }

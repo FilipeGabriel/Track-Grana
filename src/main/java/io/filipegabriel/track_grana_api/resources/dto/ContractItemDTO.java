@@ -21,4 +21,6 @@ public class ContractItemDTO {
 
     private Long monthlyContractsId;
 
+    private Long invoiceId;
+
 }

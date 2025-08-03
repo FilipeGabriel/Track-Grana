@@ -1,6 +1,7 @@
 package io.filipegabriel.track_grana_api.services;
 
 import io.filipegabriel.track_grana_api.entities.Account;
+import io.filipegabriel.track_grana_api.entities.MonthlyContracts;
 import io.filipegabriel.track_grana_api.entities.Users;
 import io.filipegabriel.track_grana_api.repositories.AccountRepository;
 import io.filipegabriel.track_grana_api.repositories.UserRepository;
@@ -45,6 +46,10 @@ public class AccountService {
         newAccount.setBirthDate(birthDate);
         newAccount.setAccountImage(account.getAccountImage());
         newAccount.setUser(user);
+
+        MonthlyContracts monthlyContracts = new MonthlyContracts();
+        monthlyContracts.setTotalMonthlyContractsValue(0.0);
+        newAccount.setMonthlyContracts(monthlyContracts);
 
         user.setAccount(newAccount);
 

@@ -24,6 +24,6 @@ public class MonthlyContracts implements Serializable {
 
     @JsonIgnore
     @OneToOne(mappedBy = "monthlyContracts")
-    private Invoice invoice;
+    private Account account;
 
 }
