@@ -85,6 +85,9 @@ public class ExpensesItemService {
     public void updateMonthlyItem(ExpensesItem oldExpensesItem, ExpensesItemDTO newExpensesItem){
         oldExpensesItem.setDescription(newExpensesItem.getDescription());
         oldExpensesItem.setItemValue(newExpensesItem.getItemValue());
+        SpentType newSpentType = spentTypeRepository.findById(newExpensesItem.getSpentTypeId())
+                .orElseThrow(NoSuchElementException::new);
+        oldExpensesItem.setSpentType(newSpentType);
     }
 
 }

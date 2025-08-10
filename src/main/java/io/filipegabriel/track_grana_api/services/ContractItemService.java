@@ -97,7 +97,9 @@ public class ContractItemService {
         oldContractItem.setDescription(newContractItem.getDescription());
         oldContractItem.setItemValue(newContractItem.getItemValue());
         oldContractItem.setEndDate(contractItemDate);
-        oldContractItem.setPaid(newContractItem.getPaid());
+        SpentType newSpentType = spentTypeRepository.findById(newContractItem.getSpentTypeId())
+                .orElseThrow(NoSuchElementException::new);
+        oldContractItem.setSpentType(newSpentType);
     }
 
 }

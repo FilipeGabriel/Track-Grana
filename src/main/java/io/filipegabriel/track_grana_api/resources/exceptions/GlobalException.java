@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -53,6 +54,17 @@ public class GlobalException {
         Instant timestamp = Instant.now();
         HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
         String error = "Formato de data invalido, entre em contato com o suporte, informando essa mensagem!";
+        String message = e.getMessage();
+        String path = request.getRequestURI();
+        StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
+        return ResponseEntity.status(status).body(standardError);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<StandardError> HttpMessageNotReadable(HttpMessageNotReadableException e, HttpServletRequest request){
+        Instant timestamp = Instant.now();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String error = "Formato do campo invalido";
         String message = e.getMessage();
         String path = request.getRequestURI();
         StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
