@@ -71,4 +71,15 @@ public class GlobalException {
         return ResponseEntity.status(status).body(standardError);
     }
 
+    @ExceptionHandler(VerifyError.class)
+    public ResponseEntity<StandardError> VerifyError(VerifyError e, HttpServletRequest request){
+        Instant timestamp = Instant.now();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String error = e.getMessage();
+        String message = e.getMessage();
+        String path = request.getRequestURI();
+        StandardError standardError = new StandardError(timestamp, status.value(), error, message, path);
+        return ResponseEntity.status(status).body(standardError);
+    }
+
 }

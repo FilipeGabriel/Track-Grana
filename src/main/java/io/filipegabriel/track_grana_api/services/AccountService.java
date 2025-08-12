@@ -34,6 +34,13 @@ public class AccountService {
 //Post
 
     public Account insert(AccountDTO account){
+        if (repository.existsByCpf(account.getCpf())) {
+            throw new VerifyError("Já existe uma conta cadastrada com o CPF informado.");
+        }
+        if (repository.existsByUserName(account.getUserName())) {
+            throw new VerifyError("Já existe uma conta cadastrada com o Username informado.");
+        }
+
         Account newAccount = new Account();
         Users user = userRepository.findById(account.getUserId()).orElseThrow(NoSuchElementException::new);
 
