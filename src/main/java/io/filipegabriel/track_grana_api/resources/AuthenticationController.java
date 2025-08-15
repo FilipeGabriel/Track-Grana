@@ -46,6 +46,9 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid RegisterDTO data){
+        if (userRepository.existsByEmail(data.email())) {
+            throw new VerifyError("Já existe uma conta cadastrada com o Email informado.");
+        }
         if(this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
